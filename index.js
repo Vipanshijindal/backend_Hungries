@@ -17,9 +17,6 @@ app.use(bodyparser.json());
   app.use("/firm",firmRoutes);
   app.use("/product",productRoutes);
 
-app.use("/home", (req, res) => {
-  res.send("hello");
-});
 app.listen(PORT, () => {
   console.log(`listening to the port ${PORT}`);
 });
