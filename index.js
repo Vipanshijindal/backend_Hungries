@@ -3,7 +3,7 @@ const app = express();
 require("dotenv").config();
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const PORT = process.env.PORT || 4000;
+const PORT =  4000;
 const vendorRoutes=require("./routes/vendorRoutes");
 const firmRoutes=require("./routes/firmRoutes")
 const productRoutes=require("./routes/productRoutes")
