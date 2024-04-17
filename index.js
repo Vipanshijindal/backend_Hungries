@@ -7,12 +7,13 @@ const PORT =  4000;
 const vendorRoutes=require("./routes/vendorRoutes");
 const firmRoutes=require("./routes/firmRoutes")
 const productRoutes=require("./routes/productRoutes")
+const cors=require("cors");
 mongoose.connect(process.env.MongoUrl).then(() => {
   console.log("successfully connected to the database")}).catch((err) => {
     console.log(err);
   });
 app.use(bodyparser.json());
-
+app.use(cors())
   app.use("/vendor",vendorRoutes);
   app.use("/firm",firmRoutes);
   app.use("/product",productRoutes);
