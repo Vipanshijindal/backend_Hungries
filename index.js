@@ -1,34 +1,37 @@
 const express = require("express");
-const dotEnv = require('dotenv');
-const mongoose = require('mongoose');
-const vendorRoutes = require('./routes/vendorRoutes');
-const bodyParser = require('body-parser');
-const firmRoutes = require('./routes/firmRoutes');
-const productRoutes = require('./routes/productRoutes');
-const cors = require('cors');
-const path = require('path')
+const app = express();
+require("dotenv").config();
+const mongoose = require("mongoose");
+const bodyparser = require("body-parser");
+const path = require("path");
+const PORT = 4000;
+const vendorRoutes = require("./routes/vendorRoutes");
+const firmRoutes = require("./routes/firmRoutes");
+const productRoutes = require("./routes/productRoutes");
 
-const app = express()
 
-const PORT =  4000;
+const cors = require("cors");
 
-dotEnv.config();
-app.use(cors())
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB connected successfully!"))
-    .catch((error) => console.log(error))
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("successfully connected to the database");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(cors());
+app.use("/uploads", express.static("uploads"));
+app.use("/vendor", vendorRoutes);
+app.use("/firm", firmRoutes);
+app.use("/product", productRoutes);
 
-app.use(bodyParser.json());
-app.use('/vendor', vendorRoutes);
-app.use('/firm', firmRoutes)
-app.use('/product', productRoutes);
-app.use('/uploads', express.static('uploads'));
-
-app.listen(PORT, () => {
-    console.log(`server started and running at ${PORT}`);
+app.use("/", (req, res) => {
+  res.send("Welcome to HUNGRIES");
 });
-
-app.use('/', (req, res) => {
-    res.send("<h1> Welcome to SUBY");
-})
+app.listen(PORT, () => {
+  console.log(`listening to the port ${PORT}`);
+});
