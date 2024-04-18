@@ -38,7 +38,7 @@ const addProduct = async(req, res) => {
         })
 
         const savedProduct = await product.save();
-        firm.product.push(savedProduct);
+        firm.products.push(savedProduct);
 
 
         await firm.save()
