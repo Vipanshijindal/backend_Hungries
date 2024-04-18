@@ -1,11 +1,19 @@
-const firmController=require("../controllers/firmController");
-const express=require("express");
-const router=express.Router();
-const verifyToken=require("../middlewares/verifyToken")
-
-router.post("/addfirm",verifyToken,firmController.firmController);
-
-// router.post("/login",firmController.vendorLogin)
+const express = require('express');
+const firmController = require('../controllers/firmController');
+const verifyToken = require('../middlewares/verifyToken');
 
 
-module.exports=router;
+const router = express.Router()
+
+router.post('/add-firm', verifyToken, firmController.addFirm);
+
+router.get('/uploads/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    res.header('Content-Type', 'image/jpeg');
+    res.sendFile(path.join(__dirname, '..', 'uploads', imageName));
+});
+
+router.delete('/:firmId', firmController.deleteFirmById);
+
+
+module.exports = router;

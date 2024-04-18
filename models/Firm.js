@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Firmschema = new mongoose.Schema({
-  firmname: {
+  firmName: {
     type: String,
     required: true,
     unique: true,
