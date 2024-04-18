@@ -13,6 +13,7 @@ mongoose.connect(process.env.MongoUrl).then(() => {
     console.log(err);
   });
 app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(cors())
   app.use("/vendor",vendorRoutes);
   app.use("/firm",firmRoutes);

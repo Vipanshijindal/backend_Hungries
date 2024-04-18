@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
-const secretkey=process.env.SecretKey
+const secretkey = process.env.SecretKey;
 
 const vendorRegister = async (req, res) => {
   const { username, email, password } = req.body;
@@ -33,40 +33,46 @@ const vendorLogin = async (req, res) => {
     if (!vendor || !(await bcrypt.compare(password, vendor.password))) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
-const token=jwt.sign({vendorId:vendor._id},secretkey,{expiresIn :"1h"})
+    const token = jwt.sign({ vendorId: vendor._id }, secretkey, {
+      expiresIn: "1h",
+    });
 
-
-    res.status(200).json({ success: "Login succesfully" ,token});
-    console.log(email ,token);
+    const vendorId = vendor._id;
+    res.status(200).json({ success: "Login succesfully", token, vendorId });
+    console.log(email, token,vendorId);
   } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
   }
 };
 
-const getAllVendors=async(req,res)=>{
-  try{
-const vendors=await Vendor.find().populate('firm');
-res.json({vendors})
-  }
-  catch(error){
+const getAllVendors = async (req, res) => {
+  try {
+    const vendors = await Vendor.find().populate("firm");
+    res.json({ vendors });
+  } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
   }
-}
-const getVendorbyId=async(req,res)=>{
-
-  const vendorId=req.params.id;
-  try{
-const vendor=await Vendor.findById(vendorId).populate('firm');
-if(!vendor){
-  return res.status(404).json({error:"Vendor not Found"})
-}
-res.status(200).json({vendor})
-  }
-  catch(error){
+};
+const getVendorbyId = async (req, res) => {
+  const vendorId = req.params.id;
+  try {
+    const vendor = await Vendor.findById(vendorId).populate("firm");
+    if (!vendor) {
+      return res.status(404).json({ error: "Vendor not Found" });
+    }
+ 
+     const vendorFirmId = vendor.firm[0]._id;
+  
+     
+    res.status(200).json({ vendor,vendorFirmId });
+    console.log(vendor,vendorFirmId);
+    
+    
+  } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
   }
-}
-module.exports = { vendorRegister, vendorLogin ,getAllVendors,getVendorbyId};
+};
+module.exports = { vendorRegister, vendorLogin, getAllVendors, getVendorbyId };
