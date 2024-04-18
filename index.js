@@ -23,7 +23,12 @@ mongoose
   });
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(cors());
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }
+app.use(cors(corsOptions));
 app.use("/uploads", express.static("uploads"));
 app.use("/vendor", vendorRoutes);
 app.use("/firm", firmRoutes);
